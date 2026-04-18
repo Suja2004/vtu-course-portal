@@ -43,6 +43,7 @@ app.post("/login", async (req, res) => {
     });
 
     req.session.cookies = response.headers["set-cookie"];
+    console.log("SET-COOKIE FROM VTU:", response.headers["set-cookie"]);
     res.json(response.data);
   } catch (err) {
     res.status(500).json({ error: "Login failed" });
