@@ -1,0 +1,33 @@
+/* ===== CSS Variables ===== */
+:root {
+  --vtu-sapphire: #004f80;
+  --vtu-sapphire-dark: #000e5c;
+  --vtu-sapphire-light: #2a6ca5;
+  --vtu-gold: #d4af37;
+  --vtu-cream: #f5f5dc;
+  --vtu-gray: #f4f4f4;
+  --vtu-gray-dark: #333;
+  --vtu-white: #ffffff;
+  --vtu-border: #ddd;
+  --vtu-shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Base ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  font-family: Arial, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--vtu-gray);
+  color: var(--vtu-gray-dark);
+  line-height: 1.6;
+}
