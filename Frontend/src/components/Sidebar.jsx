@@ -14,7 +14,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
         <div className={`sidebar-panel ${sidebarOpen ? "open" : "closed"}`}>
             <aside className="sidebar">
                 <div className="sidebar-header">
-                    <h2>Dashboard</h2>
+                    <h2 onClick={() => navigate("/home")}>Dashboard</h2>
                     <button onClick={() => setSidebarOpen(prev => !prev)}>
                         <PanelRightOpen />
                     </button>
