@@ -231,6 +231,10 @@ export default function CourseDetails() {
                                                                 onClick={() => {
                                                                     if (loadingMap[lec.id]) {
                                                                         stopRef.current[lec.id] = true;
+                                                                        setLoadingMap(prev => ({
+                                                                            ...prev,
+                                                                            [lec.id]: false
+                                                                        }));
                                                                     } else {
                                                                         completeLecture(lec.id);
                                                                     }
