@@ -19,7 +19,11 @@ app.use(
     secret: "vtu-secret",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false },
+    // cookie: { secure: false },
+    cookie: {
+      secure: true,
+      sameSite: "none",
+    },
   }),
 );
 
