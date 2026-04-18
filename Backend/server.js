@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "https://vtu-course-portal.vercel.app", "http://localhost:5173",
+    origin: ["https://vtu-course-portal.vercel.app", "http://localhost:5173"],
     credentials: true,
   }),
 );
@@ -19,13 +19,13 @@ app.use(
     secret: "vtu-secret",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }, 
+    cookie: { secure: false },
   }),
 );
 
 const vtuApi = axios.create({
   baseURL: "https://online.vtu.ac.in/api/v1",
-  validateStatus: () => true, 
+  validateStatus: () => true,
 });
 
 app.get("/", (req, res) => {
