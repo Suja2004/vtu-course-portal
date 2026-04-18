@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "https://vtu-course-portal.vercel.app",
+    origin: "https://vtu-course-portal.vercel.app", "http://localhost:5173",
     credentials: true,
   }),
 );
