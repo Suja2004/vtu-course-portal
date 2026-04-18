@@ -489,7 +489,37 @@ progress {
   padding: 6px 12px;
 }
 
-@media (max-width: 600px) {
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .sidebar-panel {
+    position: fixed;
+  }
+
+  .sidebar nav a {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+
+  .panel-button {
+    height: 100vh;
+    padding-top: 50px;
+  }
+
+  .content {
+    padding: 10px;
+    font-size: 0.8rem;
+    overflow-x: hidden;
+  }
+
+  .content.shrink,
+  .content.expand {
+    margin-left: 15px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
   .profile-container {
     flex-direction: column;
     align-items: center;
@@ -497,8 +527,8 @@ progress {
   }
 
   .profile-avatar {
-    width: 120px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
   }
 
   .profile-grid {
@@ -507,5 +537,10 @@ progress {
 
   .enrollments-list {
     grid-template-columns: 1fr;
+  }
+
+  .enrollment-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
