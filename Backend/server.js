@@ -42,8 +42,15 @@ app.post("/login", async (req, res) => {
       withCredentials: true,
     });
 
-    req.session.cookies = response.headers["set-cookie"];
-    console.log("SET-COOKIE FROM VTU:", response.headers["set-cookie"]);
+    const rawCookies = response.headers["set-cookie"] || [];
+
+    const cleanedCookies = rawCookies
+      .map((cookie) => cookie.split(";")[0]) 
+      .join("; ");
+
+    req.session.cookies = cleanedCookies;
+
+    console.log("CLEANED COOKIE:", cleanedCookies);
     res.json(response.data);
   } catch (err) {
     res.status(500).json({ error: "Login failed" });
