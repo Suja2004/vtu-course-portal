@@ -4,7 +4,7 @@ import cors from "cors";
 import session from "express-session";
 
 const app = express();
-
+app.set("trust proxy", 1);
 app.use(express.json());
 
 app.use(
@@ -45,7 +45,7 @@ app.post("/login", async (req, res) => {
     const rawCookies = response.headers["set-cookie"] || [];
 
     const cleanedCookies = rawCookies
-      .map((cookie) => cookie.split(";")[0]) 
+      .map((cookie) => cookie.split(";")[0])
       .join("; ");
 
     req.session.cookies = cleanedCookies;
@@ -62,6 +62,7 @@ app.get("/profile", async (req, res) => {
     const response = await vtuApi.get("/student/profile", {
       headers: {
         Cookie: req.session.cookies,
+        "X-Requested-With": "XMLHttpRequest",
       },
     });
 
@@ -76,6 +77,7 @@ app.get("/enrollments", async (req, res) => {
     const response = await vtuApi.get("/student/my-enrollments", {
       headers: {
         Cookie: req.session.cookies,
+        "X-Requested-With": "XMLHttpRequest",
       },
     });
 
@@ -92,6 +94,7 @@ app.get("/my-courses/:slug", async (req, res) => {
       {
         headers: {
           Cookie: req.session.cookies,
+          "X-Requested-With": "XMLHttpRequest",
         },
       },
     );
@@ -111,6 +114,7 @@ app.get("/my-courses/:slug/lectures/:id", async (req, res) => {
       {
         headers: {
           Cookie: req.session.cookies,
+          "X-Requested-With": "XMLHttpRequest",
         },
       },
     );
@@ -131,6 +135,7 @@ app.post("/my-courses/:slug/lectures/:id/progress", async (req, res) => {
       {
         headers: {
           Cookie: req.session.cookies,
+          "X-Requested-With": "XMLHttpRequest",
         },
       },
     );
