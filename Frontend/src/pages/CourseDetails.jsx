@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
 import Sidebar from "../components/Sidebar";
@@ -10,10 +10,11 @@ export default function CourseDetails() {
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [openLessons, setOpenLessons] = useState({});
     const [lectureDetails, setLectureDetails] = useState({});
-    const [loadingLecture, setLoadingLecture] = useState(null);
-    const [stopMap, setStopMap] = useState({});
+    const [loadingMap, setLoadingMap] = useState({});
     const [error, setError] = useState("");
     const [showError, setShowError] = useState(false);
+
+    const stopRef = useRef({});
 
     useEffect(() => {
         fetchCourse();
@@ -81,15 +82,24 @@ export default function CourseDetails() {
     };
 
     const completeLecture = async (lectureId) => {
-        if (loadingLecture === lectureId) return;
-        setLoadingLecture(lectureId);
+        if (loadingMap[lectureId]) return;
+
+        stopRef.current[lectureId] = false;
+
+        setLoadingMap(prev => ({
+            ...prev,
+            [lectureId]: true
+        }));
 
         try {
             const details = lectureDetails[lectureId];
 
             if (!details || !details.duration) {
                 alert("Lecture not loaded yet");
-                setLoadingLecture(null);
+                setLoadingMap(prev => ({
+                    ...prev,
+                    [lectureId]: false
+                }));
                 return;
             }
 
@@ -98,7 +108,7 @@ export default function CourseDetails() {
             let current = 0;
             const STEP = 60;
 
-            while (current < totalSeconds && !stopMap[lectureId]) {
+            while (current < totalSeconds && !stopRef.current[lectureId]) {
                 const res = await api.post(
                     `/my-courses/${slug}/lectures/${lectureId}/progress`,
                     {
@@ -119,7 +129,10 @@ export default function CourseDetails() {
                 }));
 
                 if (percent === 100) {
-                    setLoadingLecture(null);
+                    setLoadingMap(prev => ({
+                        ...prev,
+                        [lectureId]: false
+                    }));
                     break;
                 }
 
@@ -200,7 +213,7 @@ export default function CourseDetails() {
                                                             ) : (
                                                                 <>
                                                                     <div className="progress">
-                                                                        <div className="progress-bar"  style={{ width: "300px" }}>
+                                                                        <div className="progress-bar" style={{ width: "300px" }}>
                                                                             <div className="lecture-progress-bar" style={{ width: `${details.progress}%` }}></div>
                                                                         </div>
                                                                         {details.progress}%
@@ -214,27 +227,22 @@ export default function CourseDetails() {
                                                             }
 
                                                             <button
-                                                                className="complete-btn"
-                                                                onClick={() => completeLecture(lec.id)}
-                                                                disabled={loadingLecture === lec.id || details?.is_completed}
+                                                                className={loadingMap[lec.id] ? "stop-btn" : "complete-btn"}
+                                                                onClick={() => {
+                                                                    if (loadingMap[lec.id]) {
+                                                                        stopRef.current[lec.id] = true;
+                                                                    } else {
+                                                                        completeLecture(lec.id);
+                                                                    }
+                                                                }}
+                                                                disabled={details?.is_completed || details?.progress == "100"}
                                                             >
                                                                 {details?.is_completed || details?.progress == "100"
                                                                     ? "Completed"
-                                                                    : loadingLecture === lec.id
-                                                                        ? "Completing..."
+                                                                    : loadingMap[lec.id]
+                                                                        ? "Stop"
                                                                         : "Complete Lecture"}
                                                             </button>
-
-                                                            {loadingLecture === lec.id && (
-                                                                <button
-                                                                    className="stop-btn"
-                                                                    onClick={() =>
-                                                                        setStopMap(prev => ({ ...prev, [lec.id]: true }))
-                                                                    }
-                                                                >
-                                                                    Stop
-                                                                </button>
-                                                            )}
                                                         </div>
                                                     );
                                                 })
