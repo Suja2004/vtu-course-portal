@@ -94,7 +94,7 @@ export default function CourseDetails() {
         try {
             const details = lectureDetails[lectureId];
 
-            if (!details || !details.duration) {
+            if (!details) {
                 alert("Lecture not loaded yet");
                 setLoadingMap(prev => ({
                     ...prev,
@@ -102,8 +102,9 @@ export default function CourseDetails() {
                 }));
                 return;
             }
-
-            const totalSeconds = parseDuration(details.duration);
+            
+            const duration = details?.duration || 1000;
+            const totalSeconds = parseDuration(duration);
 
             let current = 0;
             const STEP = 60;
