@@ -103,7 +103,7 @@ export default function CourseDetails() {
                 return;
             }
             
-            const duration = details?.duration || 1000;
+            const duration = details?.duration || "00:10:00 mins";
             const totalSeconds = parseDuration(duration);
 
             let current = 0;
