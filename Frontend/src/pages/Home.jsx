@@ -101,6 +101,7 @@ export default function Home() {
                                                 <div className="course-buttons">
                                                     <button
                                                         className="view-btn"
+                                                        title="View Course"
                                                         onClick={() =>
                                                             navigate(`/course/${course?.details?.slug}`)
                                                         }
@@ -109,6 +110,7 @@ export default function Home() {
                                                     </button>
                                                     <button
                                                         className="quiz-btn"
+                                                        title="View Quiz"
                                                         onClick={() =>
                                                             navigate(`/course/${course?.details?.slug}/quiz`)
                                                         }
