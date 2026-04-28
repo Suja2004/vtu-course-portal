@@ -85,7 +85,7 @@ app.get("/enrollments", async (req, res) => {
 
     res.json(response.data);
   } catch (err) {
-    res.status(500).json({ error: "Applications fetch failed" });
+    res.status(500).json({ error: "Enrollments fetch failed" });
   }
 });
 
@@ -103,7 +103,7 @@ app.get("/my-courses/:slug", async (req, res) => {
 
     res.json(response.data);
   } catch (err) {
-    res.status(500).json({ error: "Applications fetch failed" });
+    res.status(500).json({ error: "Course fetch failed" });
   }
 });
 
@@ -123,7 +123,7 @@ app.get("/my-courses/:slug/lectures/:id", async (req, res) => {
 
     res.json(response.data);
   } catch (err) {
-    res.status(500).json({ error: "Applications fetch failed" });
+    res.status(500).json({ error: "Lecture fetch failed" });
   }
 });
 
@@ -146,6 +146,40 @@ app.post("/my-courses/:slug/lectures/:id/progress", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Progress update failed" });
+  }
+});
+
+app.get("/my-courses/:slug/exams", async (req, res) => {
+  try {
+    const slug = req.params.slug;
+
+    const response = await vtuApi.get(`/student/my-courses/${slug}/exams`, {
+      headers: {
+        Cookie: req.session.cookies,
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    });
+
+    res.json(response.data);
+  } catch (err) {
+    res.status(500).json({ error: "Quiz fetch failed" });
+  }
+});
+
+app.get("/exam-result", async (req, res) => {
+  try {
+    const { url } = req.query;
+
+    const response = await axios.get(url, {
+      headers: {
+        Cookie: req.session.cookies,
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    });
+
+    res.json(response.data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch result" });
   }
 });
 

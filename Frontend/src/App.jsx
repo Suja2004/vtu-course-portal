@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import CourseDetails from "./pages/CourseDetails";
+import QuizDetails from "./pages/QuizDetails";
 import "./App.css"
 
 const PrivateRoute = ({ children }) => {
@@ -22,6 +23,7 @@ export default function App() {
           }
         />
         <Route path="/course/:slug" element={<CourseDetails />} />
+        <Route path="/course/:slug/quiz" element={<QuizDetails />} />
       </Routes>
     </BrowserRouter>
   );

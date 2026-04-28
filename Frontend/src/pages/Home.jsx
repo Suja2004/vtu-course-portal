@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import api from "../api";
 import Sidebar from "../components/Sidebar";
-import { PanelRightOpen, PanelRightClose, Eye } from "lucide-react";
+import { PanelRightOpen, PanelRightClose, Eye, NotepadText } from "lucide-react";
 
 export default function Home() {
     const [profile, setProfile] = useState(null);
@@ -98,14 +98,24 @@ export default function Home() {
 
                                             <div className="enrollment-header">
                                                 <h4>{course?.details?.title}</h4>
-                                                <button
-                                                    className="view-btn"
-                                                    onClick={() =>
-                                                        navigate(`/course/${course?.details?.slug}`)
-                                                    }
-                                                >
-                                                    <Eye />
-                                                </button>
+                                                <div className="course-buttons">
+                                                    <button
+                                                        className="view-btn"
+                                                        onClick={() =>
+                                                            navigate(`/course/${course?.details?.slug}`)
+                                                        }
+                                                    >
+                                                        <Eye />
+                                                    </button>
+                                                    <button
+                                                        className="quiz-btn"
+                                                        onClick={() =>
+                                                            navigate(`/course/${course?.details?.slug}/quiz`)
+                                                        }
+                                                    >
+                                                        <NotepadText />
+                                                    </button>
+                                                </div>
                                             </div>
 
                                             <div className="enrollment-info">
