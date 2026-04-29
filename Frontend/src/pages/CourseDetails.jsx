@@ -119,20 +119,23 @@ export default function CourseDetails() {
         );
 
         const percent = res.data?.data?.percent;
+        const is_completed = res.data?.data?.is_completed;
 
         setLectureDetails((prev) => ({
           ...prev,
           [lectureId]: {
             ...prev[lectureId],
             progress: percent,
+            is_completed,
           },
         }));
 
-        if (percent === 100) {
+        if (percent === 100 || is_completed) {
           setLoadingMap((prev) => ({
             ...prev,
             [lectureId]: false,
           }));
+          fetchCourse();
           break;
         }
 
