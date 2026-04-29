@@ -255,14 +255,6 @@
   display: inline-block;
 }
 
-.card.completed p {
-  color: #28a745;
-}
-
-.card.incomplete p {
-  color: var(--vtu-sapphire-light);
-}
-
 /* Profile */
 .profile-card {
   padding: 20px;
@@ -403,13 +395,54 @@
 }
 
 .module-item {
-  background: var(--vtu-gray);
+  box-shadow: 0 2px 8px var(--vtu-shadow);
   border-radius: 6px;
   padding: 16px;
   margin: 8px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
+}
+
+.lecture-list {
+  margin: 10px 20px 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lecture-card {
+  padding: 10px 20px;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+}
+
+.lecture-card p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lecture-card.completed p {
+  color: #28a745;
+}
+
+.lecture-card.incomplete p {
+  color: var(--vtu-red);
+}
+
+.lecture {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.lecture button {
+  margin-top: -10px;
 }
 
 /* Progress */
