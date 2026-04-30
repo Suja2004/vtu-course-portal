@@ -793,6 +793,17 @@ progress {
     align-items: flex-start;
   }
 
+  .lecture-list {
+    margin: 10px 0 0 20px;
+  }
+
+  .lecture-details {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
   .exam-list {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
