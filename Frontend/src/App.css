@@ -388,6 +388,52 @@
   transition: width 0.3s ease;
 }
 
+/* PROGRAM CARD */
+.program-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 16px;
+  background: #f9fafb;
+}
+
+/* HEADER */
+.program-header {
+  margin-bottom: 10px;
+}
+
+.program-header h3 {
+  margin: 0;
+}
+
+.program-meta {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* CHILD COURSES GRID */
+.program-courses {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+/* CHILD CARD */
+.child-course-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+/* SMALL BUTTON */
+.view-btn.small {
+  padding: 4px 8px;
+}
+
 /* modules */
 .module-list {
   display: flex;

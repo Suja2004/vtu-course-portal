@@ -58,7 +58,6 @@ export default function Home() {
                     ) : (
                         <div className="profile-container">
 
-                            {/* Avatar */}
                             <div className="profile-left">
                                 <img
                                     src={profile?.avatar_url || "/default-avatar.png"}
@@ -67,7 +66,6 @@ export default function Home() {
                                 />
                             </div>
 
-                            {/* Details */}
                             <div className="profile-right">
                                 <h3>{profile?.user?.name}</h3>
                                 <p><strong>College:</strong> {profile?.college?.name}</p>
@@ -93,57 +91,95 @@ export default function Home() {
 
                             <div className="enrollments-list">
                                 {Array.isArray(enrollments) && enrollments.length > 0 ? (
-                                    enrollments.map((course, i) => (
-                                        <div key={course.id || i} className="enrollment-card">
+                                    enrollments.map((item, i) => {
 
-                                            <div className="enrollment-header">
-                                                <h4>{course?.details?.title}</h4>
-                                                <div className="course-buttons">
-                                                    <button
-                                                        className="view-btn"
-                                                        title="View Course"
-                                                        onClick={() =>
-                                                            navigate(`/course/${course?.details?.slug}`)
-                                                        }
-                                                    >
-                                                        <Eye />
-                                                    </button>
-                                                    <button
-                                                        className="quiz-btn"
-                                                        title="View Quiz"
-                                                        onClick={() =>
-                                                            navigate(`/course/${course?.details?.slug}/quiz`)
-                                                        }
-                                                    >
-                                                        <NotepadText />
-                                                    </button>
+                                        if (item.type === "course") {
+                                            return (
+                                                <div key={item.id || i} className="enrollment-card">
+
+                                                    <div className="enrollment-header">
+                                                        <h4>{item?.details?.title}</h4>
+
+                                                        <div className="course-buttons">
+                                                            <button
+                                                                className="view-btn"
+                                                                onClick={() =>
+                                                                    navigate(`/course/${item?.details?.slug}`)
+                                                                }
+                                                            >
+                                                                <Eye />
+                                                            </button>
+
+                                                            <button
+                                                                className="quiz-btn"
+                                                                onClick={() =>
+                                                                    navigate(`/course/${item?.details?.slug}/quiz`)
+                                                                }
+                                                            >
+                                                                <NotepadText />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="enrollment-info">
+                                                        <p><strong>Type:</strong> {item.type}</p>
+                                                        <p><strong>Enrolled:</strong> {item.enrollment_date}</p>
+                                                        <p>
+                                                            <strong>Expires:</strong>{" "}
+                                                            {new Date(item.expiry_date).toLocaleDateString()}
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="progress">
+                                                        <div className="progress-bar">
+                                                            <div
+                                                                className="course-progress"
+                                                                style={{ width: `${item.progress_percent}%` }}
+                                                            />
+                                                        </div>
+                                                        <span>{item.progress_percent}%</span>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            );
+                                        }
 
-                                            <div className="enrollment-info">
-                                                <p>
-                                                    <strong>Enrolled:</strong>{" "}
-                                                    {course?.enrollment_date}
-                                                </p>
+                                        if (item.type === "programme") {
+                                            return (
+                                                <div key={item.id || i} className="program-card">
 
-                                                <p>
-                                                    <strong>Expires:</strong>{" "}
-                                                    {new Date(course?.expiry_date).toLocaleDateString()}
-                                                </p>
-                                            </div>
+                                                    <div className="program-header">
+                                                        <h3>{item.details.title}</h3>
+                                                        <p className="program-meta">
+                                                            <p><strong>Type:</strong> {item.type}</p>
+                                                            {item.details.child_courses.length} Courses
+                                                        </p>
 
-                                            <div className="progress">
-                                                <div className="progress-bar">
-                                                    <div
-                                                        className="course-progress"
-                                                        style={{ width: `${course?.progress_percent}%` }}
-                                                    />
+                                                    </div>
+
+                                                    <div className="program-courses">
+                                                        {item.details.child_courses.map((course) => (
+                                                            <div key={course.id} className="child-course-card">
+
+                                                                <p>{course.title}</p>
+
+                                                                <button
+                                                                    className="view-btn small"
+                                                                    onClick={() =>
+                                                                        navigate(`/course/${course.slug}`)
+                                                                    }
+                                                                >
+                                                                    <Eye />
+                                                                </button>
+
+                                                            </div>
+                                                        ))}
+                                                    </div>
                                                 </div>
-                                                <span>{course?.progress_percent}%</span>
-                                            </div>
+                                            );
+                                        }
 
-                                        </div>
-                                    ))
+                                        return null;
+                                    })
                                 ) : (
                                     <p>No enrollments found</p>
                                 )}
