@@ -1,12 +1,15 @@
 import { useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
+import { X } from "lucide-react"
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showError, setShowError] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,6 +19,23 @@ export default function Login() {
 
     try {
       const res = await api.post("/login", { email, password });
+
+      if (!res?.data?.success) {
+        setError(
+          res?.data?.message || "Login failed. Try again."
+        );
+        setShowError(true);
+        setFadeOut(false);
+
+        setTimeout(() => {
+          setFadeOut(true);
+
+          setTimeout(() => {
+            setShowError(false);
+          }, 300);
+        }, 2000);
+        return;
+      }
 
       localStorage.setItem("token", res.data.token);
 
@@ -57,7 +77,22 @@ export default function Login() {
         </button>
       </form>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {showError && (
+        <div className={`error-overlay ${fadeOut ? "fade-out" : "fade-in"}`}>
+          <div className="error-modal">
+            <p>{error}</p>
+            <button
+              className="error-btn"
+              onClick={() => {
+                setFadeOut(true);
+                setTimeout(() => setShowError(false), 300);
+              }}
+            >
+              <X />
+            </button>
+          </div>
+        </div>
+      )}
 
       <p className="login-note">
         Note: Use the same credentials as the VTU Online Portal.

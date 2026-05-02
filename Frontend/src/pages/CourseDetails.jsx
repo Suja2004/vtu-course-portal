@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
 import Sidebar from "../components/Sidebar";
-import { CircleCheck, CirclePlay } from "lucide-react";
+import { CircleCheck, CirclePlay, X } from "lucide-react";
 
 export default function CourseDetails() {
   const { slug } = useParams();
@@ -14,6 +14,7 @@ export default function CourseDetails() {
   const [loadingMap, setLoadingMap] = useState({});
   const [error, setError] = useState("");
   const [showError, setShowError] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
 
   const stopRef = useRef({});
 
@@ -31,9 +32,17 @@ export default function CourseDetails() {
         window.location.href = "/";
         return;
       }
-      console.error(err);
       setError("Failed to load course");
       setShowError(true);
+      setFadeOut(false);
+
+      setTimeout(() => {
+        setFadeOut(true);
+
+        setTimeout(() => {
+          setShowError(false);
+        }, 300);
+      }, 2000);
     }
   };
 
@@ -65,7 +74,17 @@ export default function CourseDetails() {
         window.location.href = "/";
         return;
       }
-      console.error("Lecture fetch failed:", err);
+      setError("Lecture fetch failed:", err);
+      setShowError(true);
+      setFadeOut(false);
+
+      setTimeout(() => {
+        setFadeOut(true);
+
+        setTimeout(() => {
+          setShowError(false);
+        }, 300);
+      }, 2000);
     }
 
     setLoadingLectureMap((prev) => ({
@@ -95,7 +114,18 @@ export default function CourseDetails() {
       const details = lectureDetails[lectureId];
 
       if (!details || !details.duration) {
-        alert("Lecture details not found");
+        setError("Lecture details not found");
+        setShowError(true);
+
+        setFadeOut(false);
+
+        setTimeout(() => {
+          setFadeOut(true);
+          setTimeout(() => {
+            setShowError(false);
+          }, 300);
+        }, 2000);
+
         setLoadingMap((prev) => ({
           ...prev,
           [lectureId]: false,
@@ -144,7 +174,17 @@ export default function CourseDetails() {
         await new Promise((r) => setTimeout(r, 1000));
       }
     } catch (err) {
-      console.error("Progress update failed", err);
+      setError("Progress update failed");
+      setShowError(true);
+      setFadeOut(false);
+
+      setTimeout(() => {
+        setFadeOut(true);
+
+        setTimeout(() => {
+          setShowError(false);
+        }, 300);
+      }, 2000);
     }
   };
 
@@ -287,10 +327,20 @@ export default function CourseDetails() {
           )}
 
           {showError && (
-            <div className="error-overlay">
+            <div
+              className={`error-overlay ${fadeOut ? "fade-out" : "fade-in"}`}
+            >
               <div className="error-modal">
                 <p>{error}</p>
-                <button onClick={() => setShowError(false)}>Close</button>
+                <button
+                  className="error-btn"
+                  onClick={() => {
+                    setFadeOut(true);
+                    setTimeout(() => setShowError(false), 300);
+                  }}
+                >
+                  <X />
+                </button>
               </div>
             </div>
           )}
